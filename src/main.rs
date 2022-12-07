@@ -4,6 +4,7 @@ pub mod day01;
 pub mod day02;
 pub mod day04;
 pub mod day05;
+pub mod day06;
 
 fn main() {
     let (a, b) = day01::soln("data/day01.txt");
@@ -27,9 +28,10 @@ fn main() {
         println!("\tPart B: {b}");
         
     }
-    /* 
-    println!("Day 05");
+    
+    let (a, b) = day06::soln("data/day06.txt");
+    println!("Day 06");
     println!("\tPart A: {a}");
     println!("\tPart B: {b}");
-    */
+    
 }
