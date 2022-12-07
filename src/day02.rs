@@ -27,7 +27,7 @@ impl RPS {
     }
 }
 
-fn parse_line_A(line : String) -> (RPS, RPS) {
+fn parse_line_a(line : String) -> (RPS, RPS) {
     let opp = match line.chars().nth(0).unwrap() {
         'A' => RPS::Rock,
         'B' => RPS::Paper,
@@ -43,7 +43,7 @@ fn parse_line_A(line : String) -> (RPS, RPS) {
     (opp, you)
 }
 
-fn parse_line_B(line : String) -> (RPS, Result) {
+fn parse_line_b(line : String) -> (RPS, Result) {
     let opp = match line.chars().nth(0).unwrap() {
         'A' => RPS::Rock,
         'B' => RPS::Paper,
@@ -101,8 +101,8 @@ pub fn soln(path : &str) -> (i32, i32) {
     let mut a : i32 = 0;
     let mut b : i32 = 0;
     for line in lines {
-        let (o, y) = parse_line_A(line.clone());
-        let (_o, w) = parse_line_B(line);
+        let (o, y) = parse_line_a(line.clone());
+        let (_o, w) = parse_line_b(line);
         let y_ = need_to_play(o, w);
         a += score(o, y);
         b += score(o, y_);
@@ -118,7 +118,7 @@ mod tests{
     use crate::day02::*;
     #[test]
     fn parsing() {
-        assert_eq!((RPS::Rock, RPS::Rock), parse_line_A("A X".to_string()))
+        assert_eq!((RPS::Rock, RPS::Rock), parse_line_a("A X".to_string()))
     }
     #[test]
     fn given_test() {
