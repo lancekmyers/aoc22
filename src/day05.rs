@@ -1,11 +1,7 @@
-use std::fs::File;
-use std::io::{BufRead, BufReader};
-
 use nom::{
     self,
     bytes::complete::{take, take_while_m_n},
-    character::{complete::char, is_digit},
-    complete::tag,
+    character::{complete::char},
     multi::{count, separated_list0},
     sequence::{pair, preceded},
     IResult, Parser,
@@ -30,8 +26,6 @@ struct CrateStacks<'a> {
 
 impl<'a> std::fmt::Display for CrateStacks<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        
-        let stacks = &self.stacks;
         
         fn fmt_stack(f: &mut std::fmt::Formatter, stack : &Vec<Crate>) -> 
             std::fmt::Result {
@@ -133,7 +127,6 @@ fn execute_b<'a>(instrs : &Vec<Instruction>, CrateStacks {stacks} : &mut CrateSt
 
 pub fn soln(path : &str) -> Option<(String, String)> {
 
-    let file = File::open(path).unwrap();
     let input = std::fs::read_to_string(path).unwrap();
 
     let (crates_inp, instructions) = input.split_once("\n\n")?;
@@ -191,7 +184,7 @@ mod tests {
     #[test] 
     fn parsing_input() {
         let inp = std::fs::read_to_string("data/test05.txt").unwrap();
-        if let Ok((rest, stacks)) = parse_stacks(&inp) {
+        if let Ok((_rest, stacks)) = parse_stacks(&inp) {
             println!("{}", stacks);
         }
         
