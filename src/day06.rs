@@ -11,7 +11,7 @@ fn all_distinct(xs : &[u8]) -> Option<usize> {
             }
         }
     }
-    return None
+    None
 }
 
 
@@ -39,7 +39,7 @@ impl aoc::Soln for Day06 {
                 }
             }
         }
-        return i;
+        i
     }
 
     fn soln_b(&self, input : &Self::I) -> Self::B {
@@ -50,7 +50,7 @@ impl aoc::Soln for Day06 {
             i += jump + 1 
         }
         
-        return i + 14;
+        i + 14
     }
 
     fn parse(&self, file : &mut std::fs::File) -> Self::I {

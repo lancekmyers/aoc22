@@ -28,7 +28,7 @@ impl RPS {
 }
 
 fn parse_line_a(line : String) -> (RPS, RPS) {
-    let opp = match line.chars().nth(0).unwrap() {
+    let opp = match line.chars().next().unwrap() {
         'A' => RPS::Rock,
         'B' => RPS::Paper,
         'C' => RPS::Scissors,
@@ -44,7 +44,7 @@ fn parse_line_a(line : String) -> (RPS, RPS) {
 }
 
 fn parse_line_b(line : String) -> (RPS, Result) {
-    let opp = match line.chars().nth(0).unwrap() {
+    let opp = match line.chars().next().unwrap() {
         'A' => RPS::Rock,
         'B' => RPS::Paper,
         'C' => RPS::Scissors,

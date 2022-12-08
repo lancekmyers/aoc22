@@ -7,10 +7,10 @@ fn split_half(x : &str) -> (&str, &str) {
 
 fn char_to_ix(c : char) -> Option<usize> {
     let c_ = c as u8;
-    let offset = if (c_ >= b'A' && c_ <= b'Z') {
+    let offset = if (b'A'..=b'Z').contains(&c_) {
         26
     } else {0};
-    if (c_ < b'A' || c_ > b'z') {
+    if !(b'A'..=b'z').contains(&c_) {
         None
     } else {
         c.to_digit(36).map( |i| (i - 10 + offset) as usize )
@@ -67,7 +67,7 @@ fn soln_a_line(line : &str) -> char {
             return c
         }
     }
-    return '0'
+    '0'
 }
 
 fn soln_b_chunk(a : &str, b : &str, c : &str) -> Option<usize> {

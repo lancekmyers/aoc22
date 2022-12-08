@@ -26,7 +26,7 @@ fn overlaps(x : Interval, y : Interval) -> bool {
 fn parse_interval(input : &str) -> Option<Interval> {
     let x : Vec<i32> = input.split('-').flat_map(|x| x.parse().ok()).collect();
     // nom::character::is_digit(chr)
-    Some(Interval { begin : *x.get(0)?, end : *x.get(1)? })
+    Some(Interval { begin : *x.first()?, end : *x.get(1)? })
 }
 
 fn parse_line(input : &str) -> Option<(Interval, Interval)> {
@@ -40,7 +40,7 @@ pub fn soln(path : &str) -> (i32, i32) {
     let lines = BufReader::new(file).lines().flatten(); //lines(file);
 
     let a = lines.flat_map(|x| parse_line(&x)).filter(
-        |(x, y) | x.contains(&y) || y.contains(&x)
+        |(x, y) | x.contains(y) || y.contains(x)
     ).count();
 
     let file = File::open(path).unwrap();

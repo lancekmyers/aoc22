@@ -16,7 +16,7 @@ pub struct Crate {
     name: String,
 }
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Instruction {
     count: usize,
     from: usize,
@@ -36,7 +36,7 @@ impl std::fmt::Display for CrateStacks {
             for c in stack {
                 acc.push_str(&c.name.to_string())
             }
-            write!(f, "{acc}\n")
+            writeln!(f, "{acc}")
         }
 
         for stack in &self.stacks {
@@ -83,7 +83,7 @@ fn parse_stacks(input: &str) -> nom::IResult<&str, CrateStacks> {
 fn parse_instructions(input: &str) -> IResult<&str, Vec<Instruction>> {
     // move 11 from 3 to 8
     fn num(input: &str) -> IResult<&str, usize> {
-        take_while_m_n(1, 20, |c: char| c.is_digit(10))(input.trim())
+        take_while_m_n(1, 20, |c: char| c.is_ascii_digit())(input.trim())
             .map(|(str, x)| (str, x.parse::<usize>().unwrap()))
     }
 
@@ -136,7 +136,7 @@ impl Soln for Day05 {
     fn soln_a(&self, (stacks, instrs): &Self::I) -> Self::A {
         let mut stacks = stacks.clone();
 
-        execute_a(&instrs, &mut stacks);
+        execute_a(instrs, &mut stacks);
 
         stacks
             .stacks
@@ -149,7 +149,7 @@ impl Soln for Day05 {
     fn soln_b(&self, (stacks, instrs): &Self::I) -> Self::B {
         let mut stacks = stacks.clone();
 
-        execute_b(&instrs, &mut stacks);
+        execute_b(instrs, &mut stacks);
 
         stacks
             .stacks
@@ -181,7 +181,7 @@ pub fn soln(path: &str) -> Option<(String, String)> {
     let (_, instrs) = parse_instructions(instructions).ok()?;
 
     let mut stacks_a = stacks.clone();
-    let mut stacks_b = stacks.clone();
+    let mut stacks_b = stacks;
 
     execute_a(&instrs, &mut stacks_a);
     execute_b(&instrs, &mut stacks_b);
