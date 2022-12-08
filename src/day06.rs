@@ -1,3 +1,6 @@
+use std::io::Read;
+
+use crate::aoc;
 
 fn all_distinct(xs : &[u8]) -> Option<usize> {
     let n = xs.len();
@@ -11,60 +14,74 @@ fn all_distinct(xs : &[u8]) -> Option<usize> {
     return None
 }
 
-fn soln_a(str : &str) -> usize {
-    let mut i = 4;
-    for x in str.as_bytes().windows(4) {
-        if let [a, b, c, d] = x {
-            let any_same = (a == b || a == c || a == d) ||
-                (b == c || b == d) || (c == d);
-            if !any_same { 
-                break;
-            } else {
-                i += 1
+
+pub struct Day06 {}
+pub const DAY_06 : Day06 = Day06{};
+impl aoc::Soln for Day06 {
+    type I = String;
+
+    type A = usize;
+
+    type B = usize;
+
+    const NAME : &'static str = "Day six";
+
+    fn soln_a(&self, input : &Self::I) -> Self::A {
+        let mut i = 4;
+        for x in input.as_bytes().windows(4) {
+            if let [a, b, c, d] = x {
+                let any_same = (a == b || a == c || a == d) ||
+                    (b == c || b == d) || (c == d);
+                if !any_same { 
+                    break;
+                } else {
+                    i += 1
+                }
             }
         }
+        return i;
     }
-    return i;
-}
 
-fn soln_b(str : &str) -> usize {
-    let xs = str.as_bytes();
-    let mut i = 0;
-
-    while let Some(jump) = all_distinct(&xs[i..i+14]) {
-        i += jump + 1 
-    }
+    fn soln_b(&self, input : &Self::I) -> Self::B {
+        let xs = input.as_bytes();
+        let mut i = 0;
     
-    return i + 14;
+        while let Some(jump) = all_distinct(&xs[i..i+14]) {
+            i += jump + 1 
+        }
+        
+        return i + 14;
+    }
+
+    fn parse(&self, file : &mut std::fs::File) -> Self::I {
+        let mut buf = String::new();
+        _ = file.read_to_string(&mut buf);
+        buf
+    }
 }
 
-
-pub fn soln(path : &str) -> (usize, usize) {
-    let input = std::fs::read_to_string(path).unwrap();
-    let a = soln_a(&input);
-    let b = soln_b(&input);
-    (a, b)
-} 
+ 
 
 #[cfg(test)]
 mod tests{
     use crate::day06::*;
+    use aoc::Soln;
     #[test]
     fn given_a() {
-        assert_eq!(soln_a("mjqjpqmgbljsphdztnvjfqwrcgsmlb"), 7);
-        assert_eq!(soln_a("bvwbjplbgvbhsrlpgdmjqwftvncz"), 5);
-        assert_eq!(soln_a("nppdvjthqldpwncqszvftbrmjlhg"), 6);
-        assert_eq!(soln_a("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"), 10);
-        assert_eq!(soln_a("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"), 11);
+        assert_eq!(DAY_06.soln_a(&"mjqjpqmgbljsphdztnvjfqwrcgsmlb".to_string()), 7);
+        assert_eq!(DAY_06.soln_a(&"bvwbjplbgvbhsrlpgdmjqwftvncz".to_string()), 5);
+        assert_eq!(DAY_06.soln_a(&"nppdvjthqldpwncqszvftbrmjlhg".to_string()), 6);
+        assert_eq!(DAY_06.soln_a(&"nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg".to_string()), 10);
+        assert_eq!(DAY_06.soln_a(&"zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw".to_string()), 11);
     }
     
     #[test]
     fn given_b() {
-        assert_eq!(soln_b("mjqjpqmgbljsphdztnvjfqwrcgsmlb"), 19);
-        assert_eq!(soln_b("bvwbjplbgvbhsrlpgdmjqwftvncz"), 23);
-        assert_eq!(soln_b("nppdvjthqldpwncqszvftbrmjlhg"), 23);
-        assert_eq!(soln_b("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"), 29);
-        assert_eq!(soln_b("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"), 26);
+        assert_eq!(DAY_06.soln_b(&"mjqjpqmgbljsphdztnvjfqwrcgsmlb".to_string()), 19);
+        assert_eq!(DAY_06.soln_b(&"bvwbjplbgvbhsrlpgdmjqwftvncz".to_string()), 23);
+        assert_eq!(DAY_06.soln_b(&"nppdvjthqldpwncqszvftbrmjlhg".to_string()), 23);
+        assert_eq!(DAY_06.soln_b(&"nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg".to_string()), 29);
+        assert_eq!(DAY_06.soln_b(&"zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw".to_string()), 26);
     }
 
     #[test]
